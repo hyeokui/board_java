@@ -19,6 +19,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Override
     public void add(UserRegistrationServiceDto userRegistrationServiceDto) {
 
         User user = new User(userRegistrationServiceDto.getUserId(),

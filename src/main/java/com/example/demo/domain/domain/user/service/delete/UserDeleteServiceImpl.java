@@ -4,6 +4,7 @@ import com.example.demo.domain.domain.user.domain.UserRepository;
 import com.example.demo.exception.user.InvalidPasswordException;
 import com.example.demo.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDeleteServiceImpl implements UserDeleteService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Override
     public void delete(Long userId, String password) {
         userRepository.findById(userId)
                 .ifPresentOrElse(
@@ -29,8 +32,7 @@ public class UserDeleteServiceImpl implements UserDeleteService {
 
     private void checkPassword(Long userId, String password) {
         userRepository.findById(userId).ifPresent(user -> {
-                    if (!user.getPassword().equals(password)) {
-
+                    if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
                         throw new InvalidPasswordException();
                     }
                 }

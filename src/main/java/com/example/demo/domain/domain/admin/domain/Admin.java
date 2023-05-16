@@ -1,6 +1,6 @@
-package com.example.demo.domain.domain.user.domain;
+package com.example.demo.domain.domain.admin.domain;
 
-import com.example.demo.enums.user.UserStatus;
+import com.example.demo.enums.user.AdminStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,12 +8,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +21,7 @@ public class User {
     @NotNull
     @NotBlank
     @Column(nullable = false, unique = true)
-    private String userId;
+    private String adminId;
 
     @NotNull
     @NotBlank
@@ -40,32 +39,23 @@ public class User {
     private String email;
 
     @NotNull
-    @NotBlank
-    @Column(nullable = false, unique = true)
-    private String phone;
+    private AdminStatus adminStatus = AdminStatus.ACTIVE;
 
-    @NotNull
-    private UserStatus userStatus = UserStatus.ACTIVE;
-
-    public User(String userId, String password, String name, String email, String phone) {
-        this.userId = userId;
+    public Admin(String adminId, String password, String name, String email) {
+        this.adminId = adminId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.phone = phone;
     }
 
-    public void update(String password) {
+    public void update(String password, String name, String email) {
         this.password = password;
-    }
-
-    public void update(String name, String email, String phone) {
         this.name = name;
         this.email = email;
-        this.phone = phone;
+
     }
 
-    public void delete(Long userId, String password) {
-        this.userStatus = UserStatus.DELETED;
+    public void delete(Long adminId) {
+        this.adminStatus = AdminStatus.DELETE;
     }
 }

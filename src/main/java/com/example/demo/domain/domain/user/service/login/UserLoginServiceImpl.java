@@ -19,9 +19,10 @@ public class UserLoginServiceImpl implements UserLoginService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Override
     public Long login(String userId, String password) {
 
-        return checkPassword(userId, password).getId();
+        return checkPassword(userId, bCryptPasswordEncoder.encode(password)).getId();
     }
 
     private User checkPassword(String userId, String password) {

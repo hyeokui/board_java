@@ -1,4 +1,6 @@
 package com.example.demo.domain.domain.comment.domain;
 
-public interface CommentReportRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CommentReportRepository extends JpaRepository<CommentReport, Long> {
 }

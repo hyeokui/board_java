@@ -24,10 +24,13 @@ public class UserUpdateServiceDto {
     @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}", message = "전화번호는 000-0000-0000 형식으로 입력해주세요.")
     private String phone;
 
-    public UserUpdateServiceDto(String password, String name, String email, String phone) {
-        this.password = password;
+    public UserUpdateServiceDto(String name, String email, String phone) {
         this.name = name;
         this.email = email;
         this.phone = phone;
+    }
+
+    public UserUpdateServiceDto(String password) {
+        this.password = password;
     }
 }
