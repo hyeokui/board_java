@@ -22,7 +22,8 @@ public class AdminRegistrationServiceImpl implements AdminRegistrationService {
         Admin admin = new Admin(adminRegistrationServiceDto.getAdminId(),
                 bCryptPasswordEncoder.encode(adminRegistrationServiceDto.getPassword()),
                 adminRegistrationServiceDto.getName(),
-                adminRegistrationServiceDto.getEmail());
+                adminRegistrationServiceDto.getEmail(),
+                adminRegistrationServiceDto.getAdminStatus());
 
         checkDuplicationAdminId(adminRegistrationServiceDto);
 

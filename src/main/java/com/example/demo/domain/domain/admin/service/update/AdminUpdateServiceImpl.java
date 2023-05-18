@@ -18,14 +18,11 @@ public class AdminUpdateServiceImpl implements AdminUpdateService {
 
     @Override
     public void update(Long adminId, AdminUpdateServiceDto adminUpdateServiceDto) {
-        adminRepository.findById(adminId).ifPresentOrElse(admin ->
-                        admin.update(bCryptPasswordEncoder.encode(adminUpdateServiceDto.getPassword()),
-                                adminUpdateServiceDto.getName(),
-                                adminUpdateServiceDto.getEmail()),
-                () -> {
-                    throw new AdminNotFoundException();
-                }
-        );
-
+        adminRepository.findById(adminId)
+                .orElseThrow(AdminNotFoundException::new)
+                .update(bCryptPasswordEncoder.encode(adminUpdateServiceDto.getPassword()),
+                        adminUpdateServiceDto.getName(),
+                        adminUpdateServiceDto.getEmail()
+                );
     }
 }

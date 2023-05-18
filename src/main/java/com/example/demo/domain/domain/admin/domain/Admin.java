@@ -1,6 +1,6 @@
 package com.example.demo.domain.domain.admin.domain;
 
-import com.example.demo.enums.user.AdminStatus;
+import com.example.demo.enums.admin.AdminStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,34 +18,32 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false, unique = true)
     private String adminId;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false)
     private String password;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false)
     private String name;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
-    private AdminStatus adminStatus = AdminStatus.ACTIVE;
+    @Enumerated(EnumType.STRING)
+    private AdminStatus adminStatus;
 
-    public Admin(String adminId, String password, String name, String email) {
+    public Admin(String adminId, String password, String name, String email, AdminStatus adminStatus) {
         this.adminId = adminId;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.adminStatus = adminStatus;
     }
 
     public void update(String password, String name, String email) {
@@ -55,7 +53,7 @@ public class Admin {
 
     }
 
-    public void delete(Long adminId) {
+    public void delete(Long adminId, String password) {
         this.adminStatus = AdminStatus.DELETE;
     }
 }

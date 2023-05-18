@@ -18,16 +18,14 @@ public class AdminDeleteServiceImpl implements AdminDeleteService {
 
     @Override
     public void delete(Long adminId, String password) {
-        adminRepository.findById(adminId).
-                ifPresentOrElse(
-                        admin -> {
-                            checkPassword(adminId, password);
-                            admin.delete(adminId);
-                        },
-                        () -> {
-                            throw new AdminNotFoundException();
-                        }
-                );
+        adminRepository.findById(adminId).ifPresentOrElse(admin -> {
+                    checkPassword(adminId, password);
+                    admin.delete(adminId, password);
+                },
+                () -> {
+                    throw new AdminNotFoundException();
+                }
+        );
     }
 
     public void checkPassword(Long adminId, String password) {

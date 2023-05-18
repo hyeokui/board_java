@@ -18,20 +18,19 @@ public class UserDeleteServiceImpl implements UserDeleteService {
 
     @Override
     public void delete(Long userId, String password) {
-        userRepository.findById(userId)
-                .ifPresentOrElse(
-                        user -> {
-                            checkPassword(userId, password);
-                            user.delete(userId, password);
-                        },
-                        () -> {
-                            throw new UserNotFoundException();
-                        }
-                );
+        userRepository.findById(userId).ifPresentOrElse(user -> {
+                    checkPassword(userId, password);
+                    user.delete(userId, password);
+                },
+                () -> {
+                    throw new UserNotFoundException();
+                }
+        );
     }
 
     private void checkPassword(Long userId, String password) {
         userRepository.findById(userId).ifPresent(user -> {
+
                     if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
                         throw new InvalidPasswordException();
                     }

@@ -19,32 +19,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false, unique = true)
     private String userId;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false)
     private String password;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false)
     private String name;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false, unique = true)
     private String phone;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private UserStatus userStatus = UserStatus.ACTIVE;
 
     public User(String userId, String password, String name, String email, String phone) {

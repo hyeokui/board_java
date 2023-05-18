@@ -3,26 +3,26 @@ package com.example.demo.domain.domain.post.domain;
 import com.example.demo.domain.domain.board.domain.Board;
 import com.example.demo.domain.domain.time.domain.BaseTime;
 import com.example.demo.domain.domain.user.domain.User;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false)
     private String title;
 
-    @NotNull
     @NotBlank
     @Column(nullable = false)
     private String content;
@@ -35,9 +35,6 @@ public class Post extends BaseTime {
 
     @ManyToOne
     private Board board;
-
-    protected Post() {
-    }
 
     public Post(String title, String content, User user, Board board) {
         this.title = title;
