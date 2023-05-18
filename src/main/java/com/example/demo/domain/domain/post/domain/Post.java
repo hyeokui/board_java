@@ -1,5 +1,6 @@
 package com.example.demo.domain.domain.post.domain;
 
+import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.board.domain.Board;
 import com.example.demo.domain.domain.time.domain.BaseTime;
 import com.example.demo.domain.domain.user.domain.User;
@@ -34,12 +35,22 @@ public class Post extends BaseTime {
     private User user;
 
     @ManyToOne
+    private Admin admin;
+
+    @ManyToOne
     private Board board;
 
     public Post(String title, String content, User user, Board board) {
         this.title = title;
         this.content = content;
         this.user = user;
+        this.board = board;
+    }
+
+    public Post(String title, String content, Admin admin, Board board) {
+        this.title = title;
+        this.content = content;
+        this.admin = admin;
         this.board = board;
     }
 }

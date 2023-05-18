@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PermissionCheckServiceImpl implements PermissionCheckService {
+public class CheckPostPermissionServiceImpl implements PermissionCheckService {
 
     private final AdminRepository adminRepository;
 
@@ -20,7 +20,7 @@ public class PermissionCheckServiceImpl implements PermissionCheckService {
     public void permissionCheck(String adminId) {
         Admin admin = checkExistsAdmin(adminId);
 
-        if (admin.getAdminStatus() != AdminStatus.BOARD_ADMIN) {
+        if (admin.getAdminStatus() != AdminStatus.POST_ADMIN) {
             throw new InsufficientPermissionException();
         }
     }
@@ -29,4 +29,5 @@ public class PermissionCheckServiceImpl implements PermissionCheckService {
 
         return adminRepository.findOptionalAdminByAdminId(adminId).orElseThrow(AdminNotFoundException::new);
     }
+
 }
