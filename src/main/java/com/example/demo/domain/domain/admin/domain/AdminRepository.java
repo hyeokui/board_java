@@ -8,6 +8,9 @@ public interface AdminRepository extends JpaRepository<Admin, Long> {
 
     boolean existsByAdminId(String adminId);
 
+    boolean existsById(Long adminId);
+
     Optional<Admin> findOptionalAdminByAdminId(String adminId);
+
 
 }

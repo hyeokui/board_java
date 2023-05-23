@@ -23,8 +23,8 @@ public class BoardDeleteServiceImpl implements BoardDeleteService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void delete(Long boardId, String adminId, String password) {
-        permissionCheckService.permissionCheck(adminId);
+    public void delete(Long boardId, Long adminId, String password) {
+        permissionCheckService.checkBoardPermission(adminId);
         checkAdminAndPassword(adminId, password);
 
         boardRepository.findById(boardId).ifPresentOrElse(board ->
@@ -35,8 +35,8 @@ public class BoardDeleteServiceImpl implements BoardDeleteService {
         );
     }
 
-    private void checkAdminAndPassword(String adminId, String password) {
-        Admin admin = adminRepository.findOptionalAdminByAdminId(adminId).orElseThrow(AdminNotFoundException::new);
+    private void checkAdminAndPassword(Long adminId, String password) {
+        Admin admin = adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
 
         if (!bCryptPasswordEncoder.matches(password, admin.getPassword())) {
             throw new InvalidPasswordException();

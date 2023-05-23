@@ -19,5 +19,5 @@ public interface BoardDeleteService {
      * @throws BoardNotFoundException          :해당 게시판을 찾을 수 없을시
      * @throws InvalidPasswordException:       유효하지 않은 비밀번호 입력시
      **/
-    void delete(Long boardId, String adminId, String password);
+    void delete(Long boardId, Long adminId, String password);
 }

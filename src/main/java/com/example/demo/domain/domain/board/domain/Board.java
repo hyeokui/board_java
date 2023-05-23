@@ -22,10 +22,11 @@ public class Board {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private BoardStatus boardStatus = BoardStatus.OPERATING;
+    private BoardStatus boardStatus;
 
-    public Board(String name) {
+    public Board(String name, BoardStatus boardStatus) {
         this.name = name;
+        this.boardStatus = boardStatus;
     }
 
     public void update(String name) {

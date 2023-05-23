@@ -14,5 +14,5 @@ public interface BoardCreateService {
      * @throws AdminNotFoundException          : 해당하는 관리자를 찾을 수 없을시
      * @throws InsufficientPermissionException : 해당하는 권한이 없을시
      **/
-    void create(String adminId, String boardName);
+    void create(Long adminId, String boardName);
 }

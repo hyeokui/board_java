@@ -16,5 +16,5 @@ public interface BoardUpdateService {
      * @throws InsufficientPermissionException : 해당하는 권한이 없을시
      * @throws BoardNotFoundException          :해당하는 게시판을 찾을 수 없을시
      **/
-    void update(String adminId, Long boardId, String boardName);
+    void update(Long adminId, Long boardId, String boardName);
 }

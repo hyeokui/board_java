@@ -1,7 +1,6 @@
 package com.example.demo.domain.domain.board.service.update;
 
 import com.example.demo.domain.domain.admin.service.permission.PermissionCheckService;
-import com.example.demo.domain.domain.board.domain.Board;
 import com.example.demo.domain.domain.board.domain.BoardRepository;
 import com.example.demo.exception.user.BoardNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +16,8 @@ public class BoardUpdateServiceImpl implements BoardUpdateService {
     private final PermissionCheckService permissionCheckService;
 
     @Override
-    public void update(String adminId, Long boardId, String boardName) {
-        permissionCheckService.permissionCheck(adminId);
+    public void update(Long adminId, Long boardId, String boardName) {
+        permissionCheckService.checkBoardPermission(adminId);
 
         boardRepository.findById(boardId)
                 .orElseThrow(BoardNotFoundException::new)

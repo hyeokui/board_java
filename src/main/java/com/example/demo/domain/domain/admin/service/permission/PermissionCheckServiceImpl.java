@@ -12,12 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CheckPostPermissionServiceImpl implements PermissionCheckService {
+public class PermissionCheckServiceImpl implements PermissionCheckService {
 
     private final AdminRepository adminRepository;
 
     @Override
-    public void permissionCheck(String adminId) {
+    public void checkBoardPermission(Long adminId) {
+        Admin admin = checkExistsAdmin(adminId);
+
+        if (admin.getAdminStatus() != AdminStatus.BOARD_ADMIN) {
+            throw new InsufficientPermissionException();
+        }
+    }
+
+    @Override
+    public void checkPostPermission(Long adminId) {
         Admin admin = checkExistsAdmin(adminId);
 
         if (admin.getAdminStatus() != AdminStatus.POST_ADMIN) {
@@ -25,9 +34,18 @@ public class CheckPostPermissionServiceImpl implements PermissionCheckService {
         }
     }
 
-    private Admin checkExistsAdmin(String adminId) {
+    @Override
+    public void checkCommentPermission(Long adminId) {
+        Admin admin = checkExistsAdmin(adminId);
 
-        return adminRepository.findOptionalAdminByAdminId(adminId).orElseThrow(AdminNotFoundException::new);
+        if (admin.getAdminStatus() != AdminStatus.COMMENT_ADMIN) {
+            throw new InsufficientPermissionException();
+        }
+    }
+
+    private Admin checkExistsAdmin(Long adminId) {
+
+        return adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
     }
 
 }

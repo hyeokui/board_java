@@ -31,14 +31,20 @@ public class Post extends BaseTime {
     @Column(nullable = false, columnDefinition = "int default 0")
     private int views;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Admin admin;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
+
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private PostRecommend postRecommend;
+
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private PostReport postReport;
 
     public Post(String title, String content, User user, Board board) {
         this.title = title;
@@ -53,4 +59,10 @@ public class Post extends BaseTime {
         this.admin = admin;
         this.board = board;
     }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
 }
