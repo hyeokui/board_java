@@ -1,4 +1,4 @@
-package com.example.demo.exception.user;
+package com.example.demo.exception.admin;
 
 public class DuplicateAdminIdException extends RuntimeException {
 

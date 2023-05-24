@@ -1,4 +1,4 @@
-package com.example.demo.domain.domain.post.service.write;
+package com.example.demo.domain.domain.post.service.user.write;
 
 import com.example.demo.domain.domain.admin.domain.AdminRepository;
 import com.example.demo.domain.domain.admin.service.permission.PermissionCheckService;
@@ -9,7 +9,7 @@ import com.example.demo.domain.domain.post.domain.PostRepository;
 import com.example.demo.domain.domain.user.domain.UserRepository;
 import com.example.demo.enums.board.BoardStatus;
 import com.example.demo.exception.board.BoardNotOperatingException;
-import com.example.demo.exception.user.BoardNotFoundException;
+import com.example.demo.exception.board.BoardNotFoundException;
 import com.example.demo.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,29 +18,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PostWriteServiceImpl implements PostWriteService {
+public class UserPostWriteServiceImpl implements UserPostWriteService {
 
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
-    private final PermissionCheckService permissionCheckService;
 
     @Override
-    public void writeByAdmin(Long adminId, String title, String content, String boardName) {
-        permissionCheckService.checkPostPermission(adminId);
-        adminRepository.findById(adminId).ifPresent(admin -> {
-                    if (isBoardOperating(boardName)) {
-                        Post post = new Post(title, content, admin, board(boardName));
-                        postRepository.save(post);
-                    }
-                }
-        );
-    }
-
-    @Override
-    public void writeByUser(String userId, String title, String content, String boardName) {
-        userRepository.findOptionalUserByUserId(userId).ifPresentOrElse(user -> {
+    public void write(Long userId, String title, String content, String boardName) {
+        userRepository.findById(userId).ifPresentOrElse(user -> {
                     if (isBoardOperating(boardName)) {
                         Post post = new Post(title, content, user, board(boardName));
                         postRepository.save(post);

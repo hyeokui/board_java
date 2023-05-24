@@ -1,4 +1,4 @@
-package com.example.demo.exception.user;
+package com.example.demo.exception.board;
 
 public class BoardNotFoundException extends RuntimeException {
 

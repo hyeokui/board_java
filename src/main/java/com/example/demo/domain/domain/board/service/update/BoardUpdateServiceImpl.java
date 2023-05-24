@@ -2,7 +2,7 @@ package com.example.demo.domain.domain.board.service.update;
 
 import com.example.demo.domain.domain.admin.service.permission.PermissionCheckService;
 import com.example.demo.domain.domain.board.domain.BoardRepository;
-import com.example.demo.exception.user.BoardNotFoundException;
+import com.example.demo.exception.board.BoardNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

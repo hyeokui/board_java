@@ -2,18 +2,18 @@ package com.example.demo.domain.domain.post.service.write;
 
 import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.admin.domain.AdminRepository;
-import com.example.demo.domain.domain.admin.service.permission.PermissionCheckService;
 import com.example.demo.domain.domain.board.domain.Board;
 import com.example.demo.domain.domain.board.domain.BoardRepository;
 import com.example.demo.domain.domain.post.domain.Post;
 import com.example.demo.domain.domain.post.domain.PostRepository;
+import com.example.demo.domain.domain.post.service.admin.write.AdminPostWriteService;
 import com.example.demo.enums.admin.AdminStatus;
 import com.example.demo.enums.board.BoardStatus;
-import com.example.demo.exception.InsufficientPermissionException;
+import com.example.demo.exception.admin.InsufficientPermissionException;
 import com.example.demo.exception.board.BoardNotOperatingException;
 import com.example.demo.exception.post.PostNotFoundException;
-import com.example.demo.exception.user.AdminNotFoundException;
-import com.example.demo.exception.user.BoardNotFoundException;
+import com.example.demo.exception.admin.AdminNotFoundException;
+import com.example.demo.exception.board.BoardNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -26,19 +26,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PostWriteServiceImplTest {
+class AdminPostWriteServiceImplTest {
 
     private final AdminRepository adminRepository;
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
-    private final PostWriteService postWriteService;
+    private final AdminPostWriteService adminPostWriteService;
 
     @Autowired
-    public PostWriteServiceImplTest(AdminRepository adminRepository, BoardRepository boardRepository, PostRepository postRepository, PostWriteService postWriteService) {
+    public AdminPostWriteServiceImplTest(AdminRepository adminRepository, BoardRepository boardRepository, PostRepository postRepository, AdminPostWriteService adminPostWriteService) {
         this.adminRepository = adminRepository;
         this.boardRepository = boardRepository;
         this.postRepository = postRepository;
-        this.postWriteService = postWriteService;
+        this.adminPostWriteService = adminPostWriteService;
     }
 
     @Test
@@ -53,7 +53,7 @@ class PostWriteServiceImplTest {
         String boardName = board.getName();
 
         //when
-        postWriteService.writeByAdmin(adminId, "test_title", "test_content", boardName);
+        adminPostWriteService.write(adminId, "test_title", "test_content", boardName);
         Post post = postRepository.findByAdminId(adminId).orElseThrow(PostNotFoundException::new);
 
         //then
@@ -77,7 +77,7 @@ class PostWriteServiceImplTest {
 
         //when
         AdminNotFoundException adminNotFoundException = assertThrows(AdminNotFoundException.class,
-                () -> postWriteService.writeByAdmin(adminId + 1, "test_title", "test_content", boardName)
+                () -> adminPostWriteService.write(adminId + 1, "test_title", "test_content", boardName)
         );
 
         //then
@@ -97,7 +97,7 @@ class PostWriteServiceImplTest {
 
         //when
         InsufficientPermissionException insufficientPermissionException = assertThrows(InsufficientPermissionException.class,
-                () -> postWriteService.writeByAdmin(adminId, "test_title", "test_content", boardName)
+                () -> adminPostWriteService.write(adminId, "test_title", "test_content", boardName)
         );
 
         //then
@@ -117,7 +117,7 @@ class PostWriteServiceImplTest {
 
         //when
         BoardNotFoundException boardNotFoundException = assertThrows(BoardNotFoundException.class,
-                () -> postWriteService.writeByAdmin(adminId, "test_title", "test_content", boardName + 1)
+                () -> adminPostWriteService.write(adminId, "test_title", "test_content", boardName + 1)
         );
 
         //then
@@ -137,7 +137,7 @@ class PostWriteServiceImplTest {
 
         //when
         BoardNotOperatingException boardNotOperatingException = assertThrows(BoardNotOperatingException.class,
-                () -> postWriteService.writeByAdmin(adminId, "test_title", "test_content", boardName)
+                () -> adminPostWriteService.write(adminId, "test_title", "test_content", boardName)
         );
 
         //then

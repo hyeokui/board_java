@@ -2,7 +2,7 @@ package com.example.demo.domain.domain.admin.service.login;
 
 import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.admin.domain.AdminRepository;
-import com.example.demo.exception.user.AdminNotFoundException;
+import com.example.demo.exception.admin.AdminNotFoundException;
 import com.example.demo.exception.user.InvalidPasswordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

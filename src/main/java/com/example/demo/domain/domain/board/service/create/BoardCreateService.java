@@ -1,7 +1,7 @@
 package com.example.demo.domain.domain.board.service.create;
 
-import com.example.demo.exception.InsufficientPermissionException;
-import com.example.demo.exception.user.AdminNotFoundException;
+import com.example.demo.exception.admin.InsufficientPermissionException;
+import com.example.demo.exception.admin.AdminNotFoundException;
 
 public interface BoardCreateService {
 

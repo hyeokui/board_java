@@ -3,7 +3,7 @@ package com.example.demo.domain.domain.admin.service.registration;
 import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.admin.domain.AdminRepository;
 import com.example.demo.domain.domain.admin.service.registration.dto.AdminRegistrationServiceDto;
-import com.example.demo.exception.user.DuplicateAdminIdException;
+import com.example.demo.exception.admin.DuplicateAdminIdException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

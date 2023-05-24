@@ -1,4 +1,4 @@
-package com.example.demo.exception;
+package com.example.demo.exception.admin;
 
 public class InsufficientPermissionException extends RuntimeException {
 

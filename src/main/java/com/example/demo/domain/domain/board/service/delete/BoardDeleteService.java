@@ -1,8 +1,8 @@
 package com.example.demo.domain.domain.board.service.delete;
 
-import com.example.demo.exception.InsufficientPermissionException;
-import com.example.demo.exception.user.AdminNotFoundException;
-import com.example.demo.exception.user.BoardNotFoundException;
+import com.example.demo.exception.admin.InsufficientPermissionException;
+import com.example.demo.exception.admin.AdminNotFoundException;
+import com.example.demo.exception.board.BoardNotFoundException;
 import com.example.demo.exception.user.InvalidPasswordException;
 
 public interface BoardDeleteService {

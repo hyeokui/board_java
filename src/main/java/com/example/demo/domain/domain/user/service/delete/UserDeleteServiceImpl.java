@@ -30,7 +30,6 @@ public class UserDeleteServiceImpl implements UserDeleteService {
 
     private void checkPassword(Long userId, String password) {
         userRepository.findById(userId).ifPresent(user -> {
-
                     if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
                         throw new InvalidPasswordException();
                     }

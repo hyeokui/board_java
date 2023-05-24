@@ -2,7 +2,7 @@ package com.example.demo.domain.domain.admin.service.update;
 
 import com.example.demo.domain.domain.admin.domain.AdminRepository;
 import com.example.demo.domain.domain.admin.service.update.dto.AdminUpdateServiceDto;
-import com.example.demo.exception.user.AdminNotFoundException;
+import com.example.demo.exception.admin.AdminNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

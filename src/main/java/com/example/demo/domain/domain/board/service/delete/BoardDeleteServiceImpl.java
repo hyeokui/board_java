@@ -4,8 +4,8 @@ import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.admin.domain.AdminRepository;
 import com.example.demo.domain.domain.admin.service.permission.PermissionCheckService;
 import com.example.demo.domain.domain.board.domain.BoardRepository;
-import com.example.demo.exception.user.AdminNotFoundException;
-import com.example.demo.exception.user.BoardNotFoundException;
+import com.example.demo.exception.admin.AdminNotFoundException;
+import com.example.demo.exception.board.BoardNotFoundException;
 import com.example.demo.exception.user.InvalidPasswordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,10 +36,11 @@ public class BoardDeleteServiceImpl implements BoardDeleteService {
     }
 
     private void checkAdminAndPassword(Long adminId, String password) {
-        Admin admin = adminRepository.findById(adminId).orElseThrow(AdminNotFoundException::new);
-
-        if (!bCryptPasswordEncoder.matches(password, admin.getPassword())) {
-            throw new InvalidPasswordException();
-        }
+        adminRepository.findById(adminId).ifPresent(admin -> {
+                    if (!bCryptPasswordEncoder.matches(password, admin.getPassword())) {
+                        throw new InvalidPasswordException();
+                    }
+                }
+        );
     }
 }
