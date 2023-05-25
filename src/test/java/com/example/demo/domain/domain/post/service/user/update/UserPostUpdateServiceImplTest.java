@@ -7,6 +7,7 @@ import com.example.demo.domain.domain.post.domain.PostRepository;
 import com.example.demo.domain.domain.user.domain.User;
 import com.example.demo.domain.domain.user.domain.UserRepository;
 import com.example.demo.enums.board.BoardStatus;
+import com.example.demo.exception.board.BoardNotOperatingException;
 import com.example.demo.exception.post.PostNotFoundException;
 import com.example.demo.exception.user.UserNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -48,12 +49,13 @@ class UserPostUpdateServiceImplTest {
 
         Board board = new Board("test_board", BoardStatus.OPERATING);
         boardRepository.save(board);
+        Long boardId = board.getId();
 
         Post post = new Post("test_title", "test_content", user, board);
         postRepository.save(post);
 
         //when
-        userPostUpdateService.update(userId, "update_title", "update_content");
+        userPostUpdateService.update(userId, boardId, "update_title", "update_content");
 
         //then
         assertEquals("update_title", post.getTitle());
@@ -69,16 +71,42 @@ class UserPostUpdateServiceImplTest {
 
         Board board = new Board("test_board", BoardStatus.OPERATING);
         boardRepository.save(board);
+        Long boardId = board.getId();
 
         Post post = new Post("test_title", "test_content", user, board);
         postRepository.save(post);
 
         //when
         PostNotFoundException postNotFoundException = assertThrows(PostNotFoundException.class,
-                () -> userPostUpdateService.update(userId + 1, "update_title", "update_content")
+                () -> userPostUpdateService.update(userId + 1, boardId, "update_title", "update_content")
         );
 
         //then
         assertEquals("This post could not be found", postNotFoundException.getMessage());
     }
+
+    @Test
+    void 글수정_비운영게시판_비정상작동() {
+        //given
+        User user = new User("test_id", "test_password", "test_name", "test_email", "test_phone");
+        userRepository.save(user);
+        Long userId = user.getId();
+
+        Board board = new Board("test_board", BoardStatus.NOT_OPERATING);
+        boardRepository.save(board);
+        Long boardId = board.getId();
+
+        Post post = new Post("test_title", "test_content", user, board);
+        postRepository.save(post);
+
+        //when
+        BoardNotOperatingException boardNotOperatingException = assertThrows(BoardNotOperatingException.class,
+                () -> userPostUpdateService.update(userId, boardId, "update_title", "update_content")
+        );
+
+        //then
+        assertEquals("This board is not currently operating", boardNotOperatingException.getMessage());
+
+    }
+
 }

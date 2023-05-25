@@ -54,11 +54,12 @@ class UserPostWriteServiceImplTest {
 
         Board board = new Board("test", BoardStatus.OPERATING);
         boardRepository.save(board);
+        Long boardId = board.getId();
         String boardName = board.getName();
 
         //when
         userPostWriteService.write(userId, "test_title", "test_content", boardName);
-        Post post = postRepository.findByUserId(userId).orElseThrow(PostNotFoundException::new);
+        Post post = postRepository.findByUserIdAndBoardId(userId, boardId).orElseThrow(PostNotFoundException::new);
 
         //then
         assertNotNull(post);

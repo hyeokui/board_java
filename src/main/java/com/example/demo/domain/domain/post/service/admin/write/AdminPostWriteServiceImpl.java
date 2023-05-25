@@ -4,6 +4,7 @@ import com.example.demo.domain.domain.admin.domain.AdminRepository;
 import com.example.demo.domain.domain.admin.service.permission.PermissionCheckService;
 import com.example.demo.domain.domain.board.domain.Board;
 import com.example.demo.domain.domain.board.domain.BoardRepository;
+import com.example.demo.domain.domain.board.service.status.OperatingStatusService;
 import com.example.demo.domain.domain.post.domain.Post;
 import com.example.demo.domain.domain.post.domain.PostRepository;
 import com.example.demo.domain.domain.user.domain.UserRepository;
@@ -23,34 +24,22 @@ public class AdminPostWriteServiceImpl implements AdminPostWriteService {
     private final AdminRepository adminRepository;
     private final BoardRepository boardRepository;
     private final PostRepository postRepository;
+    private final OperatingStatusService operatingStatusService;
     private final PermissionCheckService permissionCheckService;
 
     @Override
     public void write(Long adminId, String title, String content, String boardName) {
-        permissionCheckService.checkPostPermission(adminId);
         adminRepository.findById(adminId).ifPresent(admin -> {
-                    if (isBoardOperating(boardName)) {
-                        Post post = new Post(title, content, admin, board(boardName));
-                        postRepository.save(post);
-                    }
+                    permissionCheckService.checkPostPermission(adminId);
+                    operatingStatusService.isBoardOperating(boardName);
+
+                    Post post = new Post(title, content, admin, board(boardName));
+                    postRepository.save(post);
                 }
         );
     }
 
     private Board board(String boardName) {
         return boardRepository.findByName(boardName).orElseThrow(BoardNotFoundException::new);
-    }
-
-    private boolean isBoardOperating(String boardName) {
-        boardRepository.findByName(boardName).ifPresentOrElse(board -> {
-                    if (board.getBoardStatus() != BoardStatus.OPERATING) {
-                        throw new BoardNotOperatingException();
-                    }
-                },
-                () -> {
-                    throw new BoardNotFoundException();
-                }
-        );
-        return true;
     }
 }

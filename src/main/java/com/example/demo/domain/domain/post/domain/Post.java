@@ -4,12 +4,14 @@ import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.board.domain.Board;
 import com.example.demo.domain.domain.time.domain.BaseTime;
 import com.example.demo.domain.domain.user.domain.User;
+import com.example.demo.enums.post.PostStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
@@ -40,6 +42,10 @@ public class Post extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PostStatus postStatus;
+
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private PostRecommend postRecommend;
 
@@ -51,6 +57,7 @@ public class Post extends BaseTime {
         this.content = content;
         this.user = user;
         this.board = board;
+        this.postStatus = PostStatus.ACTIVE;
     }
 
     public Post(String title, String content, Admin admin, Board board) {
@@ -58,11 +65,16 @@ public class Post extends BaseTime {
         this.content = content;
         this.admin = admin;
         this.board = board;
+        this.postStatus = PostStatus.ACTIVE;
     }
 
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void delete() {
+        this.postStatus = PostStatus.DELETED;
     }
 
 }
