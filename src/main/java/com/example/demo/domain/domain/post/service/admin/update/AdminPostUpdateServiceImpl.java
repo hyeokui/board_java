@@ -1,5 +1,6 @@
 package com.example.demo.domain.domain.post.service.admin.update;
 
+import com.example.demo.domain.domain.admin.domain.AdminRepository;
 import com.example.demo.domain.domain.admin.service.permission.PermissionCheckService;
 import com.example.demo.domain.domain.board.domain.BoardRepository;
 import com.example.demo.domain.domain.board.service.status.OperatingStatusService;
@@ -20,12 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdminPostUpdateServiceImpl implements AdminPostUpdateService {
 
+    private final AdminRepository adminRepository;
     private final PostRepository postRepository;
     private final OperatingStatusService operatingStatusService;
     private final PermissionCheckService permissionCheckService;
 
     @Override
     public void update(Long postId, Long adminId, String title, String content, String boardName) {
+        adminRepository.validateAdmin(adminId);
         postRepository.findByIdAndAdminIdAndPostStatus(postId, adminId, PostStatus.ACTIVE).ifPresentOrElse(post -> {
                     permissionCheckService.checkPostPermission(adminId);
                     operatingStatusService.isBoardOperating(boardName);

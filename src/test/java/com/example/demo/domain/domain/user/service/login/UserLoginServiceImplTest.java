@@ -36,7 +36,7 @@ class UserLoginServiceImplTest {
         userRepository.save(user);
 
         //when
-        Long loginId = userLoginService.login(user.getUserId(), user.getPassword());
+        Long loginId = userLoginService.login(user.getUserId(), "test_password");
 
         //then
         assertEquals(user.getId(), loginId);

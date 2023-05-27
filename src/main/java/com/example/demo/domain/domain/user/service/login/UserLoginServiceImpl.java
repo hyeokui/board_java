@@ -1,7 +1,9 @@
 package com.example.demo.domain.domain.user.service.login;
 
+import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.user.domain.User;
 import com.example.demo.domain.domain.user.domain.UserRepository;
+import com.example.demo.exception.admin.AdminNotFoundException;
 import com.example.demo.exception.user.InvalidPasswordException;
 import com.example.demo.exception.user.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,24 +24,16 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Override
     public Long login(String userId, String password) {
 
-        return checkPassword(userId, bCryptPasswordEncoder.encode(password)).getId();
+        return foundIdAndCheckPassword(userId, password).getId();
     }
 
-    private User checkPassword(String userId, String password) {
-        Optional<User> userOptional = getUserByUserId(userId)
-                .filter(
-                        user ->
-                                bCryptPasswordEncoder.matches(user.getPassword(), password)
-                );
+    private User foundIdAndCheckPassword(String userId, String password) {
+        User user = userRepository.findOptionalUserByUserId(userId).orElseThrow(UserNotFoundException::new);
 
-        return userOptional.orElseThrow(InvalidPasswordException::new);
-    }
-
-    private Optional<User> getUserByUserId(String userId) {
-        if (!userRepository.existsByUserId(userId)) {
-            throw new UserNotFoundException();
+        if (!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            throw new InvalidPasswordException();
         }
 
-        return userRepository.findOptionalUserByUserId(userId);
+        return user;
     }
 }
