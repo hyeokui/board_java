@@ -55,14 +55,6 @@ public class Post extends BaseTime {
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private RecommendStatus recommendStatus;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ReportStatus reportStatus;
-
     public Post(String title, String content, User user, Board board) {
         this.title = title;
         this.content = content;

@@ -1,4 +1,4 @@
-package com.example.demo.domain.domain.post.service.write;
+package com.example.demo.domain.domain.post.service.admin.write;
 
 import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.admin.domain.AdminRepository;

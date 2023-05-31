@@ -38,7 +38,7 @@ public class CommentRecommend {
         this.recommendStatus = RecommendStatus.RECOMMEND;
     }
 
-    public void removeRecommend() {
+    public void cancel() {
         this.recommendStatus = RecommendStatus.UNRECOMMENDED;
     }
 }

@@ -16,5 +16,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<Post> findByIdAndAdminIdAndPostStatus(Long postId, Long adminId, PostStatus postStatus);
 
-    Optional<Post> findByIdAndUserIdAndRecommendStatus(Long postId, Long userId, RecommendStatus recommendStatus);
 }

@@ -29,8 +29,8 @@ public class AdminPostDeleteServiceImpl implements AdminPostDeleteService {
 
     @Override
     public void delete(Long postId, Long adminId, String password, String boardName) {
+        permissionCheckService.checkPostPermission(adminId);
         postRepository.findByIdAndAdminIdAndPostStatus(postId, adminId, PostStatus.ACTIVE).ifPresentOrElse(post -> {
-                    permissionCheckService.checkPostPermission(adminId);
                     operatingStatusService.isBoardOperating(boardName);
                     foundIdAndCheckPassword(adminId, password);
                     post.delete();
