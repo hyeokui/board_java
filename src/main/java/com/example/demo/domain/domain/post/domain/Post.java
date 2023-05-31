@@ -4,6 +4,8 @@ import com.example.demo.domain.domain.admin.domain.Admin;
 import com.example.demo.domain.domain.board.domain.Board;
 import com.example.demo.domain.domain.time.domain.BaseTime;
 import com.example.demo.domain.domain.user.domain.User;
+import com.example.demo.enums.common.RecommendStatus;
+import com.example.demo.enums.common.ReportStatus;
 import com.example.demo.enums.post.PostStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -12,6 +14,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 @Getter
@@ -33,6 +36,12 @@ public class Post extends BaseTime {
     @Column(nullable = false, columnDefinition = "int default 0")
     private int views;
 
+    @PositiveOrZero
+    private int recommendCount = 0;
+
+    @PositiveOrZero
+    private int reportCount = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
@@ -46,11 +55,13 @@ public class Post extends BaseTime {
     @Enumerated(EnumType.STRING)
     private PostStatus postStatus;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private PostRecommend postRecommend;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private RecommendStatus recommendStatus;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private PostReport postReport;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private ReportStatus reportStatus;
 
     public Post(String title, String content, User user, Board board) {
         this.title = title;
@@ -75,6 +86,14 @@ public class Post extends BaseTime {
 
     public void delete() {
         this.postStatus = PostStatus.DELETED;
+    }
+
+    public void increaseRecommendCount() {
+        this.recommendCount++;
+    }
+
+    public void decreaseRecommendCount() {
+        this.recommendCount--;
     }
 
 }
