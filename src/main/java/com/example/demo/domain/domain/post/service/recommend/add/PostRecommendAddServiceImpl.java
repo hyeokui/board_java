@@ -25,11 +25,11 @@ public class PostRecommendAddServiceImpl implements PostRecommendAddService {
 
     @Override
     public void add(Long postId, Long userId) {
+        Post post = postRepository.validatePost(postId);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         checkDuplicateUserRecommendation(userId, postId);
 
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        PostRecommend postRecommend = new PostRecommend(user, post, RecommendStatus.RECOMMEND);
+        PostRecommend postRecommend = new PostRecommend(user, postRepository.validatePost(postId), RecommendStatus.RECOMMEND);
         postRecommendRepository.save(postRecommend);
 
         post.increaseRecommendCount();

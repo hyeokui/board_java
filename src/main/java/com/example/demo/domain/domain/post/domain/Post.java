@@ -88,4 +88,7 @@ public class Post extends BaseTime {
         this.recommendCount--;
     }
 
+    public void increaseViews() {
+        this.views++;
+    }
 }

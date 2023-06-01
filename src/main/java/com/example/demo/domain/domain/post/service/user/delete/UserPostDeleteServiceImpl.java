@@ -28,8 +28,8 @@ public class UserPostDeleteServiceImpl implements UserPostDeleteService {
 
     @Override
     public void delete(Long postId, Long userId, String password, String boardName) {
+        foundIdAndCheckPassword(userId, password);
         postRepository.findByIdAndUserIdAndPostStatus(postId, userId, PostStatus.ACTIVE).ifPresentOrElse(post -> {
-                    foundIdAndCheckPassword(userId, password);
                     operatingStatusService.isBoardOperating(boardName);
                     post.delete();
                 },

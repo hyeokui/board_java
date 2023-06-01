@@ -35,7 +35,7 @@ class UserRegistrationServiceImplTest {
 
         //when
         userRegistrationService.add(userRegistrationServiceDto);
-        User user = userRepository.findOptionalUserByUserId(userRegistrationServiceDto.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByUserId(userRegistrationServiceDto.getUserId()).orElseThrow(UserNotFoundException::new);
 
         //then
         assertNotNull(user);

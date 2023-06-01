@@ -34,7 +34,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     }
 
     private void checkDuplicationUserId(UserRegistrationServiceDto userRegistrationServiceDto) {
-        Optional<User> userOptional = userRepository.findOptionalUserByUserId(userRegistrationServiceDto.getUserId());
+        Optional<User> userOptional = userRepository.findByUserId(userRegistrationServiceDto.getUserId());
         if (userOptional.isPresent()) {
             throw new DuplicateUserIdException(userRegistrationServiceDto.getUserId() + "is already exists.");
         }
