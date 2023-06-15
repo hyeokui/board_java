@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error Page</title>
+</head>
+<body>
+<script type="text/javascript">
+    const errorMessage = "[[${errorMessage}]]";
+    if (errorMessage) {
+        top.alert(errorMessage);
+    }
+    window.history.back();
+</script>
+</body>
+</html>

@@ -21,18 +21,12 @@ public class UserUpdateServiceImpl implements UserUpdateService {
 
         userRepository.findById(userId).ifPresentOrElse(user ->
                         user.update(userUpdateServiceDto.getName(),
+                                bCryptPasswordEncoder.encode(userUpdateServiceDto.getPassword()),
                                 userUpdateServiceDto.getEmail(),
                                 userUpdateServiceDto.getPhone()),
                 () -> {
                     throw new UserNotFoundException();
                 }
-        );
-    }
-
-    private void passwordUpdate(Long userId, UserUpdateServiceDto userUpdateServiceDto) {
-        userRepository.findById(userId).ifPresent(user ->
-                user.update(bCryptPasswordEncoder.encode(userUpdateServiceDto.getPassword())
-                )
         );
     }
 }

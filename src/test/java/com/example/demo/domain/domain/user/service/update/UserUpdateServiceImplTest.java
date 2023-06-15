@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,11 +18,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserUpdateServiceImplTest {
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
     private final UserUpdateService userUpdateService;
 
     @Autowired
-    public UserUpdateServiceImplTest(UserRepository userRepository, UserUpdateService userUpdateService) {
+    public UserUpdateServiceImplTest(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, UserUpdateService userUpdateService) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
         this.userUpdateService = userUpdateService;
     }
@@ -29,11 +32,11 @@ class UserUpdateServiceImplTest {
     @Test
     void 유저업데이트_정상작동() {
         //given
-        User user = new User("test_id", "test_password", "test_name", "test_email", "test_phone");
+        User user = new User("test_id", bCryptPasswordEncoder.encode("test_password"), "test_name", "test_email", "test_phone");
         userRepository.save(user);
         Long userId = user.getId();
 
-        UserUpdateServiceDto userUpdateServiceDto = new UserUpdateServiceDto("update_name", "update_email", "update_phone");
+        UserUpdateServiceDto userUpdateServiceDto = new UserUpdateServiceDto("update_name", "update_password", "update_email", "update_phone");
 
         //when
         userUpdateService.update(userId, userUpdateServiceDto);
@@ -41,6 +44,7 @@ class UserUpdateServiceImplTest {
         //then
         assertNotNull(user);
         assertEquals("update_name", user.getName());
+        assertTrue(bCryptPasswordEncoder.matches("update_password", user.getPassword()));
         assertEquals("update_email", user.getEmail());
         assertEquals("update_phone", user.getPhone());
     }
@@ -48,11 +52,11 @@ class UserUpdateServiceImplTest {
     @Test
     void 유저업데이트_비정상작동_아이디없음() {
         //given
-        User user = new User("test_id", "test_password", "test_name", "test_email", "test_phone");
+        User user = new User("test_id", bCryptPasswordEncoder.encode("test_password"), "test_name", "test_email", "test_phone");
         userRepository.save(user);
         Long userId = user.getId();
 
-        UserUpdateServiceDto userUpdateServiceDto = new UserUpdateServiceDto("update_name", "update_email", "update_phone");
+        UserUpdateServiceDto userUpdateServiceDto = new UserUpdateServiceDto("update_name", "update_password", "update_email", "update_phone");
 
         //when
         UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class, () ->

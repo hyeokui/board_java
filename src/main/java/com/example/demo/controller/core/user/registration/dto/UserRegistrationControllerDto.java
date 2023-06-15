@@ -1,13 +1,13 @@
-package com.example.demo.domain.domain.user.service.registration.dto;
+package com.example.demo.controller.core.user.registration.dto;
 
+import com.example.demo.domain.domain.user.service.registration.dto.UserRegistrationServiceDto;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Getter
-public class UserRegistrationServiceDto {
+public class UserRegistrationControllerDto {
+
     @NotBlank
     private final String userId;
 
@@ -26,7 +26,7 @@ public class UserRegistrationServiceDto {
     @NotBlank
     private final String phone;
 
-    public UserRegistrationServiceDto(String userId, String password, String confirmPassword, String name, String email, String phone) {
+    public UserRegistrationControllerDto(String userId, String password, String confirmPassword, String name, String email, String phone) {
         this.userId = userId;
         this.password = password;
         this.confirmPassword = confirmPassword;
@@ -34,4 +34,9 @@ public class UserRegistrationServiceDto {
         this.email = email;
         this.phone = phone;
     }
+
+    public UserRegistrationServiceDto convertServiceDto() {
+        return new UserRegistrationServiceDto(this.userId, this.password, this.confirmPassword, this.name, this.email, this.phone);
+    }
+
 }
